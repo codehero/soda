@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -22,16 +21,17 @@ browser
   .session()
   .open('/')
   .type('q', 'Hello World')
-  .clickAndWait('btnG')
+  .click('btnG')
+  .waitForTextPresent('Hello World')
   .getTitle(function(title){
-    assert.ok(~title.indexOf('Hello World'), 'Title did not include the query');
+    assert.ok(~title.indexOf('hello world'), 'Title did not include the query: ' + title);
   })
-  .clickAndWait('link=Advanced search')
+  .click('link=Advanced search')
   .waitForPageToLoad(2000)
-  .assertText('css=#gen-query', 'Hello World')
   .assertAttribute('as_q@value', 'Hello World')
-  .testComplete()
   .end(function(err){
-    if (err) throw err;
-    console.log('done');
+    browser.testComplete(function(){
+      console.log('done');
+      if (err) throw err;
+    });
   });
